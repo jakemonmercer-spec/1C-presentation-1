@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>1C: Architecture & Intelligence</title>
+    <title>1C: Master Lecture | Architecture & Practice</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #120422;
+            --bg: #0f041a;
             --accent: #ffcc00;
             --secondary: #00f2ff;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --grad: linear-gradient(135deg, #1f0b42 0%, #0d041a 100%);
+            --glass: rgba(255, 255, 255, 0.04);
+            --grad: linear-gradient(135deg, #1f0b42 0%, #090214 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -69,8 +69,8 @@
             height: 100vh;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            padding: 50px 80px;
-            gap: 50px;
+            padding: 40px 60px;
+            gap: 40px;
             align-items: center;
         }
 
@@ -78,26 +78,24 @@
         .text-card {
             height: 85vh;
             background: var(--glass);
-            padding: 50px;
+            padding: 40px;
             border-radius: 30px;
             border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
         }
 
         .text-card::-webkit-scrollbar { width: 4px; }
         .text-card::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-        h2 { color: var(--accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 15px; font-weight: 800; }
-        h1 { font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px; }
-        p { font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.8); margin-bottom: 20px; text-align: justify; font-weight: 300; }
+        h2 { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 10px; font-weight: 800; }
+        h1 { font-size: 2.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1px; }
+        p { font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85); margin-bottom: 15px; text-align: justify; font-weight: 400; }
         
         .highlight { color: var(--accent); font-weight: 800; }
-        .blue-tag { color: var(--secondary); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
+        .blue-tag { color: var(--secondary); font-weight: 800; text-transform: uppercase; font-size: 0.75rem; display: block; margin-top: 10px; }
 
         /* 4. ВИЗУАЛЬНАЯ ЧАСТЬ */
         .visual-area {
@@ -109,43 +107,45 @@
 
         .frame {
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
             border-radius: 25px;
             border: 1px solid rgba(255,255,255,0.1);
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
-            position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
         }
 
-        .frame img { max-width: 92%; max-height: 92%; object-fit: contain; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .frame img { max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 5px; }
 
-        /* Теоретические вставки справа */
         .theory-box {
-            background: rgba(255,255,0,0.05);
+            background: rgba(255,204,0,0.05);
             padding: 40px;
-            border-radius: 20px;
-            border: 1px dashed var(--accent);
+            border-radius: 25px;
+            border: 2px dashed var(--accent);
             text-align: center;
         }
-        .theory-box h3 { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
+        .theory-box h3 { font-size: 3rem; color: var(--accent); margin-bottom: 10px; }
 
         /* 5. UI */
-        .controls { position: fixed; bottom: 40px; right: 80px; display: flex; gap: 20px; z-index: 1000; }
+        .controls { position: fixed; bottom: 30px; right: 60px; display: flex; gap: 15px; z-index: 1000; }
         .btn {
             background: var(--accent); border: none; color: #000;
-            padding: 15px 40px; border-radius: 15px;
+            padding: 12px 30px; border-radius: 12px;
             font-weight: 900; cursor: pointer; text-transform: uppercase;
-            font-size: 0.9rem; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.8rem; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .btn:hover { transform: scale(1.1) rotate(-2deg); box-shadow: 0 10px 30px rgba(255,204,0,0.5); }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(255,204,0,0.5); }
 
-        .progress-bar { position: fixed; top: 0; left: 0; height: 6px; background: var(--accent); z-index: 2000; transition: 0.5s; }
+        .progress-bar { position: fixed; top: 0; left: 0; height: 5px; background: var(--accent); z-index: 2000; transition: 0.5s; }
 
-        /* Адаптация под мелкие экраны */
-        @media (max-height: 600px) {
-            .slide { padding: 20px 40px; }
-            h1 { font-size: 1.8rem; }
-            p { font-size: 0.9rem; line-height: 1.4; }
+        /* Специфично для интро */
+        .slide-intro { grid-template-columns: 1fr; text-align: center; }
+        .slide-intro .text-card { align-items: center; justify-content: center; }
+
+        @media (max-width: 1000px) {
+            .slide { grid-template-columns: 1fr; padding: 20px; }
+            .visual-area { display: none; }
+            .text-card { height: 90vh; }
         }
     </style>
 </head>
@@ -153,142 +153,117 @@
 
     <div id="orientation-overlay">
         <div class="rotate-icon"></div>
-        <h1>РЕЖИМ ЛЕКЦИИ</h1>
-        <p>Для корректного отображения схем и графиков поверните устройство горизонтально.</p>
+        <h1>ВНИМАНИЕ: ЛЕКЦИЯ</h1>
+        <p>Для детального изучения скриншотов системы 1С поверните устройство.</p>
     </div>
 
     <div class="progress-bar" id="progress"></div>
 
     <div class="slide-container" id="container">
         
-        <!-- СЛАЙД 1: ФИЛОСОФИЯ -->
-        <section class="slide">
+        <!-- СЛАЙДЫ 1-5: ТЕОРИЯ (БЕЗ ИЗМЕНЕНИЙ В ЛОГИКЕ) -->
+        <section class="slide slide-intro">
             <div class="text-card">
-                <h2>Module 01: Philosophy</h2>
-                <h1>Данные как <br><span class="highlight">Энтропия</span></h1>
-                <p>В современном бизнесе данные — это хаос. Без структуры информация превращается в <span class="highlight">цифровой шум</span>.</p>
-                <p>Объект <b>«Отчет»</b> в системе 1С — это не просто таблица. Это фильтр, который упорядочивает реальность, превращая хаотичные записи в <span class="highlight">стратегическое преимущество</span>.</p>
-                <p class="blue-tag">// Интеллектуальный анализ метаданных</p>
-            </div>
-            <div class="visual-area">
-                <div class="theory-box">
-                    <h3>100%</h3>
-                    <p>Точность сводных данных</p>
-                </div>
+                <h2>Laboratory №6 / Engineering</h2>
+                <h1>Архитектура <br><span class="highlight">Данных 1С</span></h1>
+                <p>Курс по созданию интеллектуальных систем отчетности. <br>От хаоса записей к идеальной структуре.</p>
+                <button class="btn" onclick="moveSlide(1)">Начать изучение</button>
             </div>
         </section>
 
-        <!-- СЛАЙД 2: СКД ПАРАДИГМА -->
         <section class="slide">
             <div class="text-card">
-                <h2>Module 02: Paradigm</h2>
-                <h1>Декларативный <br><span class="highlight">Интеллект</span></h1>
-                <p><b>СКД</b> — это вершина инженерной мысли в 1С. Мы не пишем алгоритм вывода каждой ячейки — это прошлый век.</p>
-                <p>Мы используем <span class="highlight">Декларативный подход</span>: описываем, ЧТО мы хотим получить, а «умный движок» СКД сам вычисляет оптимальный путь получения данных.</p>
-                <p class="blue-tag">// Low-code архитектура высокого уровня</p>
+                <h2>Theory: Module 02</h2>
+                <h1>Суть <span class="highlight">Отчета</span></h1>
+                <p>В инженерном понимании, <b>Отчет</b> — это высокоуровневый фильтр метаданных. В отличие от Документа, который является <i>источником</i> транзакции, Отчет является <i>зеркалом</i> системы.</p>
+                <p>Он не имеет права изменять данные. Его святая миссия — <span class="highlight">агрегация</span>. Он собирает миллионы разрозненных записей и превращает их в один понятный ответ на вопрос бизнеса: «Где наши деньги и товары?».</p>
             </div>
-            <div class="visual-area">
-                <div class="theory-box">
-                    <h3>DCS</h3>
-                    <p>Data Composition System</p>
-                </div>
-            </div>
+            <div class="visual-area"><div class="theory-box"><h3>DATA</h3><p>Insight over Noise</p></div></div>
         </section>
 
-        <!-- СЛАЙД 3: ВРЕМЯ -->
         <section class="slide">
             <div class="text-card">
-                <h2>Module 03: Temporal Logic</h2>
-                <h1>Измерение <br><span class="highlight">Времени</span></h1>
-                <p>Данные без привязки к периоду бесполезны. В 1С мы работаем с <span class="highlight">Темпоральными таблицами</span>.</p>
-                <p>Виртуальная таблица <b>«Остатки и Обороты»</b> — это математическая проекция. Она не просто берет цифры, она вычисляет состояние системы в любой точке временного континуума.</p>
-                <p class="blue-tag">// Математика регистров накопления</p>
+                <h2>Theory: Module 03</h2>
+                <h1>Философия <span class="highlight">СКД</span></h1>
+                <p><b>Система Компоновки Данных</b> — это декларативный движок 1С. Мы не программируем "как рисовать таблицу". Мы описываем <span class="highlight">схему данных</span>.</p>
+                <p>Это позволяет системе самостоятельно генерировать сложнейшие SQL-запросы, объединяя таблицы и вычисляя итоги. Это <span class="highlight">интеллектуальная автоматизация</span>, которая минимизирует ошибки разработчика.</p>
             </div>
-            <div class="visual-area">
-                <div class="theory-box">
-                    <h3>T = f(x)</h3>
-                    <p>Динамический расчет итогов</p>
-                </div>
-            </div>
+            <div class="visual-area"><div class="theory-box"><h3>SKD</h3><p>Logic vs Coding</p></div></div>
         </section>
 
-        <!-- СЛАЙД 4: UX АРХИТЕКТУРА -->
         <section class="slide">
             <div class="text-card">
-                <h2>Module 04: UX Design</h2>
-                <h1>Когнитивная <яspan class="highlight">Нагрузка</span></h1>
-                <p>Инженер должен думать о пользователе. Хороший отчет — это тот, где <span class="highlight">ноль лишних действий</span>.</p>
-                <p>Вынося параметры на главную панель, мы минимизируем когнитивную нагрузку. Мы создаем <b>интуитивный мост</b> между базой данных и человеческим восприятием.</p>
-                <p class="blue-tag">// Принципы чистого интерфейса 1С</p>
+                <h2>Theory: Module 04</h2>
+                <h1>Виртуальные <span class="highlight">Миры</span></h1>
+                <p>1С использует концепцию <b>Виртуальных таблиц</b>. Это расчетные проекции регистров накопления.</p>
+                <p>Когда мы запрашиваем «Остатки и Обороты», система не пересчитывает базу с нуля. Она мгновенно обращается к предварительно вычисленным <span class="highlight">итогам</span>. Это делает работу с данными смартфонов на складах молниеносной.</p>
             </div>
-            <div class="visual-area">
-                <div class="theory-box">
-                    <h3>0.5s</h3>
-                    <p>Скорость принятия решения</p>
-                </div>
-            </div>
+            <div class="visual-area"><div class="theory-box"><h3>TIME</h3><p>Instant Calculation</p></div></div>
         </section>
 
-        <!-- СЛАЙД 5: БИЗНЕС-ЦЕННОСТЬ -->
         <section class="slide">
             <div class="text-card">
-                <h2>Module 05: Impact</h2>
-                <h1>Бизнес как <br><span class="highlight">Алгоритм</span></h1>
-                <p>Финальная цель Лабораторной №6 — не просто закрыть задание, а создать <span class="highlight">инструмент управления</span>.</p>
-                <p>Когда мы видим остатки смартфонов и комплектующих, мы видим не цифры, а <b>пульс предприятия</b>. Отчетность — это зрение бизнеса.</p>
-                <p class="blue-tag">// Переход от теории к практике</p>
+                <h2>Theory: Module 05</h2>
+                <h1>Интерфейс <span class="highlight">Разума</span></h1>
+                <p>UX-дизайн в 1С — это борьба с лишними кликами. Мы выносим параметры периода в <b>Пользовательские настройки</b>.</p>
+                <p>Это создает прямой мост между потребностью человека (увидеть данные за месяц) и работой алгоритма. Мы даем пользователю контроль, не заставляя его быть программистом.</p>
             </div>
-            <div class="visual-area">
-                <div class="theory-box">
-                    <h3>ROI</h3>
-                    <p>Эффективность автоматизации</p>
-                </div>
-            </div>
+            <div class="visual-area"><div class="theory-box"><h3>UX</h3><p>Simplicity is Power</p></div></div>
         </section>
 
-        <!-- СЛАЙДЫ С ФОТО (ПРАКТИКА) -->
+        <!-- ПРАКТИКА: СЛАЙДЫ 6-10 С ПОДРОБНЫМ ТЕКСТОМ -->
+        
         <section class="slide">
             <div class="text-card">
-                <h2>Step 01: Creation</h2>
-                <h1>Инициализация <br><span class="highlight">Объекта</span></h1>
-                <p>В Конфигураторе создаем отчет <b>«Материалы»</b>. Это первый шаг в проектировании аналитической системы.</p>
+                <h2>Step 01: Engineering Init</h2>
+                <h1>Создание <span class="highlight">Объекта</span></h1>
+                <p>Начинаем работу в <b>Конфигураторе</b>. Это "святая святых" разработчика, где мы проектируем архитектуру. Мы добавляем новый объект типа <b>«Отчет»</b> и присваиваем ему имя <span class="highlight">«Материалы»</span>.</p>
+                <p>Почему это важно? Имя объекта — это его идентификатор в системе. Мы не просто создаем файл, мы регистрируем в метаданных новую точку анализа. На этом этапе мы также создаем <b>Основную Схему Компоновки Данных</b> — тот самый "умный движок", который будет управлять логикой нашего отчета.</p>
+                <span class="blue-tag">// Инициализация метаданных завершена</span>
             </div>
             <div class="visual-area"><div class="frame"><img src="step1.jpg"></div></div>
         </section>
 
         <section class="slide">
             <div class="text-card">
-                <h2>Step 02: Logic</h2>
-                <h1>Конструктор <br><span class="highlight">Запроса</span></h1>
-                <p>Выбираем виртуальную таблицу. Здесь формируется SQL-подобный запрос к регистрам накопления.</p>
+                <h2>Step 02: Data Logic</h2>
+                <h1>Конструктор <span class="highlight">Запроса</span></h1>
+                <p>Теперь мы заходим в сердце СКД — <b>Конструктор Запроса</b>. Представьте, что это переводчик, который переводит наши желания на язык понятный базе данных. Мы находим наш регистр <b>«ОстаткиМатериалов»</b>.</p>
+                <p>Ключевое решение: мы выбираем не основную таблицу (где миллионы мелких записей), а виртуальную таблицу <span class="highlight">«ОстаткиИОбороты»</span>. Это позволяет нам одним запросом получить всё: сколько телефонов было на складе утром, сколько привезли за день, сколько продали и сколько осталось вечером. Мы перетаскиваем поля <b>Склад</b> и <b>Материал</b> в список выбранных полей.</p>
+                <span class="blue-tag">// Построение реляционной модели данных</span>
             </div>
             <div class="visual-area"><div class="frame"><img src="step2.jpg"></div></div>
         </section>
 
         <section class="slide">
             <div class="text-card">
-                <h2>Step 03: Controls</h2>
-                <h1>Настройка <br><span class="highlight">Периода</span></h1>
-                <p>Устанавливаем временные границы. Система должна четко знать точку входа и выхода данных.</p>
+                <h2>Step 03: Boundary Setting</h2>
+                <h1>Настройка <span class="highlight">Параметров</span></h1>
+                <p>Ни один отчет не имеет смысла, если он показывает «всё и сразу». Нам нужны границы. Переходим на вкладку <b>«Параметры»</b> в СКД. Здесь система автоматически создала переменные <span class="highlight">НачалоПериода</span> и <span class="highlight">КонецПериода</span>.</p>
+                <p>Это "входные ворота" для нашего запроса. Без них отчет превратился бы в бесконечную простыню текста. Мы настраиваем их так, чтобы они были доступны для автоматического заполнения. Теперь наш алгоритм знает: "Брать данные только из этого временного промежутка". Это критически важно для производительности системы.</p>
+                <span class="blue-tag">// Оптимизация выборки по времени</span>
             </div>
             <div class="visual-area"><div class="frame"><img src="step3.jpg"></div></div>
         </section>
 
         <section class="slide">
             <div class="text-card">
-                <h2>Step 04: Fast Access</h2>
-                <h1>Пользовательские <br><span class="highlight">Настройки</span></h1>
-                <p>Выносим управление «Началом» и «Концом» периода в шапку отчета. Максимальный UX-комфорт.</p>
+                <h2>Step 04: Human Interface</h2>
+                <h1>Забота о <span class="highlight">Пользователе</span></h1>
+                <p>Теперь самый важный этап для удобства — <b>Пользовательские настройки</b>. Мы находим наши параметры периода и ставим ту самую заветную галочку <span class="highlight">«Включать в пользовательские настройки»</span>.</p>
+                <p>Зачем? Чтобы бухгалтер или кладовщик не искал настройки в глубине программы. Теперь кнопки выбора дат появятся прямо в шапке отчета. Также мы настраиваем <b>Группировку</b>: говорим системе сначала показать Склад, а внутри него — список Товаров. Это превращает плоский список в логичную иерархию.</p>
+                <span class="blue-tag">// Проектирование когнитивного комфорта</span>
             </div>
             <div class="visual-area"><div class="frame"><img src="step4.jpg"></div></div>
         </section>
 
         <section class="slide">
             <div class="text-card">
-                <h2>Step 05: Release</h2>
-                <h1>Финальная <br><span class="highlight">Визуализация</span></h1>
-                <p>Результат работы в режиме «1С:Предприятие». Все данные синхронизированы и готовы к анализу.</p>
-                <button class="btn" onclick="window.location.href='https://твой-логин.github.io/kahoot-1c-lab6/'">Играть в Kahoot</button>
+                <h2>Step 05: System Launch</h2>
+                <h1>Финальный <span class="highlight">Триумф</span></h1>
+                <p>Запускаем систему в режиме <b>«1С:Предприятие»</b>. Это момент истины, когда наш код превращается в реальную пользу. Переходим в разделы «Бухгалтерия» или «Учет материалов», находим наш отчет и нажимаем <span class="highlight">«Сформировать»</span>.</p>
+                <p>Перед нами — идеальная аналитическая картина. Мы видим точные цифры остатков по iPhone, Samsung и Xiaomi. Мы видим обороты. Мы видим склады. Всё, что мы проектировали в Конфигураторе, теперь работает как единый, отлаженный механизм. Лабораторная №6 успешно завершена, а бизнес получил инструмент для принятия решений.</p>
+                <button class="btn" style="margin-top: 20px;" onclick="window.location.href='https://твой-логин.github.io/kahoot-1c-lab6/'">Запустить Квиз →</button>
             </div>
             <div class="visual-area"><div class="frame"><img src="step5.jpg"></div></div>
         </section>
@@ -303,13 +278,13 @@
     <script>
         let currentSlide = 0;
         const container = document.getElementById('container');
-        const slides = document.querySelectorAll('.slide');
         const progress = document.getElementById('progress');
+        const slidesCount = document.querySelectorAll('.slide').length;
 
         function moveSlide(dir) {
-            currentSlide = Math.max(0, Math.min(currentSlide + dir, slides.length - 1));
+            currentSlide = Math.max(0, Math.min(currentSlide + dir, slidesCount - 1));
             container.style.transform = `translateX(-${currentSlide * 100}vw)`;
-            progress.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+            progress.style.width = `${((currentSlide + 1) / slidesCount) * 100}%`;
         }
 
         document.addEventListener('keydown', (e) => {
