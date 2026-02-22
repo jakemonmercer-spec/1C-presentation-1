@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лекция: Мир отчетов 1С</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #2d0b5a;
+            --accent: #ffcc00;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at center, #46178f, #1a0633);
+            color: var(--white);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Контейнер слайдов */
+        .slide-container {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            height: 100%;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 4vw;
+            gap: 40px;
+            align-items: center;
+        }
+
+        /* Текстовый блок */
+        .text-block {
+            height: 80vh;
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .text-block::-webkit-scrollbar { width: 6px; }
+        .text-block::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        h2 { color: var(--accent); font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; }
+        h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 25px; }
+        p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px; color: rgba(255,255,255,0.9); text-align: justify; }
+        b { color: var(--accent); }
+
+        /* Блок для картинки */
+        .visual-block {
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
+            border: 2px dashed rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .img-wrapper img {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Навигация */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            right: 4vw;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .btn {
+            background: var(--accent);
+            border: none;
+            color: #000;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,204,0,0.4); }
+
+        .progress {
+            position: fixed;
+            top: 0; left: 0; height: 6px;
+            background: var(--accent);
+            transition: 0.4s;
+            z-index: 1000;
+        }
+
+        /* Адаптация */
+        @media (max-width: 1000px) {
+            .slide { grid-template-columns: 1fr; }
+            .visual-block { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress" id="progress"></div>
+
+    <div class="slide-container" id="container">
+        
+        <!-- Слайд 1: Вступление -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Лекция</h2>
+                <h1>Что такое отчеты в 1С?</h1>
+                <p>Представьте, что <b>1С — это огромный склад</b>. Каждый день туда привозят товары (приход), забирают их (расход), пересчитывают остатки. Данных миллионы.</p>
+                <p><b>Отчет</b> — это человек с блокнотом, который за секунду пробегает по всему складу и выдает вам чистый лист бумаги, где написано: «У нас осталось 50 айфонов, и за месяц мы продали 20 штук».</p>
+                <p>Без отчетов работа любого бизнеса превращается в хаос, потому что руководители не видят реальной картины.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step1.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 2: Отличие от Документа -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Базовые понятия</h2>
+                <h1>Отчет vs Документ</h1>
+                <p>Это самый частый вопрос новичков. Давайте разберемся раз и навсегда.</p>
+                <p><b>Документ</b> — это действие. Накладная, чек, приказ. Документ меняет реальность. Если вы провели документ «Продажа», товаров в базе стало меньше.</p>
+                <p><b>Отчет</b> — это наблюдение. Он ничего не меняет. Вы можете формировать отчет сто раз в день, и количество товаров на складе не изменится. Его задача — собрать информацию, красиво её раскрасить и показать вам.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step1.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 3: Что такое СКД? -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Технологии</h2>
+                <h1>СКД — «Умный мозг» отчета</h1>
+                <p>Раньше программисты писали отчеты вручную часами. В современной 1С есть <b>СКД (Система Компоновки Данных)</b>.</p>
+                <p>Это специальный конструктор. Вы просто говорите системе: «Я хочу видеть Склад, Товар и Остаток». СКД сама понимает, как залезть в базу данных, как все сложить и как нарисовать красивую таблицу.</p>
+                <p>СКД — это стандарт индустрии. Она позволяет пользователю самому менять настройки отчета, не заходя в Конфигуратор.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step2.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 4: Виртуальные таблицы -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Секрет скорости</h2>
+                <h1>Виртуальные таблицы</h1>
+                <p>Почему отчеты в 1С работают так быстро? Ответ: <b>Виртуальные таблицы</b>.</p>
+                <p>Система не пересчитывает все чеки за 10 лет каждый раз. Она хранит готовые «снимки» остатков на начало каждого месяца. Когда вы просите отчет, она берет последний снимок и быстро прибавляет к нему пару свежих документов.</p>
+                <p>Таблица <b>ОстаткиИОбороты</b>, которую мы выбрали в Лабе — это «супер-таблица». Она сразу знает, сколько было (Начало), сколько пришло (Приход), сколько ушло (Расход) и сколько осталось (Конец).</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step2.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 5: Лабораторная работа (Шаг 1) -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Практика: Лаба №6</h2>
+                <h1>Начинаем создание</h1>
+                <p>Первым делом мы заходим в <b>Конфигуратор</b>. Это «закулисье» программы. Там мы создаем новый объект — Отчет «Материалы».</p>
+                <p>Затем мы нажимаем кнопку «Открыть схему компоновки данных». Именно здесь мы будем объяснять программе, какие данные нам нужны для анализа остатков наших телефонов и комплектующих.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step1.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 6: Настройка запроса (Шаг 2) -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Практика: Лаба №6</h2>
+                <h1>Конструктор запроса</h1>
+                <p>Это самый важный момент. Мы открываем <b>Конструктор запроса</b>. Слева мы видим список всех таблиц базы данных.</p>
+                <p>Мы находим наш регистр <b>ОстаткиМатериалов</b> и выбираем именно виртуальную таблицу <b>ОстаткиИОбороты</b>.</p>
+                <p>Мы перетаскиваем нужные поля: Склад (где лежит?), Материал (что лежит?), Количество (сколько?).</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step2.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 7: Параметры (Шаг 3) -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Практика: Лаба №6</h2>
+                <h1>Настройка дат (Период)</h1>
+                <p>Любой отчет имеет смысл только во времени. Вкладка <b>Параметры</b> в СКД создается автоматически, когда мы выбрали таблицу оборотов.</p>
+                <p>Там появляются поля «Начало периода» и «Конец периода». Если их не заполнить, отчет покажет данные за всё время существования фирмы, что обычно не нужно.</p>
+                <p>Мы ставим настройки так, чтобы система сама предлагала текущий месяц или день.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step3.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 8: Пользовательские настройки (Шаг 4) -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Практика: Лаба №6</h2>
+                <h1>Делаем удобно для людей</h1>
+                <p>Программист делает отчет один раз, а пользователь (бухгалтер или кладовщик) будет запускать его каждый день.</p>
+                <p>Чтобы пользователю не пришлось лезть в дебри настроек, мы ставим галочку <b>«Включать в пользовательские настройки»</b>.</p>
+                <p>Теперь кнопки выбора даты появятся прямо на главной панели отчета в режиме «1С:Предприятие». Это и есть забота о пользователе.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step4.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 9: Подсистемы (Шаг 5) -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Практика: Лаба №6</h2>
+                <h1>Где найти отчет?</h1>
+                <p>Последний штрих — <b>Подсистемы</b>. В большой программе сотни функций. Чтобы наш отчет не потерялся, мы должны «припарковать» его в правильные разделы.</p>
+                <p>Мы выбираем «Бухгалтерия» и «Учет материалов». Теперь, когда пользователь зайдет в эти разделы, он сразу увидит кнопку нашего отчета в панели действий.</p>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step5.jpg"></div>
+            </div>
+        </section>
+
+        <!-- Слайд 10: Финал -->
+        <section class="slide">
+            <div class="text-block">
+                <h2>Результат</h2>
+                <h1>Победа! Отчет работает</h1>
+                <p>Теперь мы запускаем 1С в обычном режиме. Находим наш отчет, выбираем даты и нажимаем <b>Сформировать</b>.</p>
+                <p>Перед нами — идеальная таблица. Мы видим, сколько телефонов было на начало недели, сколько мы купили, сколько продали и какой остаток прямо сейчас.</p>
+                <p>Эта работа — фундамент для любого 1С-разработчика. Спасибо за внимание!</p>
+                <button class="btn" style="margin-top: 20px;" onclick="window.location.href='index.html'">Перейти к Kahoot!</button>
+            </div>
+            <div class="visual-block">
+                <div class="img-wrapper"><img src="step5.jpg"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="nav">
+        <button class="btn" onclick="moveSlide(-1)">Назад</button>
+        <button class="btn" onclick="moveSlide(1)">Вперед</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const container = document.getElementById('container');
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+
+        function moveSlide(dir) {
+            currentSlide = Math.max(0, Math.min(currentSlide + dir, slides.length - 1));
+            container.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            progress.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') moveSlide(1);
+            if (e.key === 'ArrowLeft') moveSlide(-1);
+        });
+    </script>
+</body>
+</html>
