@@ -2,28 +2,61 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лекция: Мир отчетов 1С</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Лекция 1С: Архитектура Отчетов</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #2d0b5a;
+            --bg: #1a0633;
             --accent: #ffcc00;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.07);
+            --glass: rgba(255, 255, 255, 0.08);
+            --grad: linear-gradient(135deg, #2d0b5a 0%, #1a0633 100%);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(circle at center, #46178f, #1a0633);
+            background: var(--grad);
             color: var(--white);
             overflow: hidden;
-            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height для мобилок */
         }
 
-        /* Контейнер слайдов */
+        /* 1. ПРЕДУПРЕЖДЕНИЕ О ПОВОРОТЕ (Отображается только в портретном режиме мобилок) */
+        #orientation-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (orientation: portrait) and (max-width: 900px) {
+            #orientation-overlay { display: flex; }
+        }
+
+        .rotate-icon {
+            width: 80px; height: 80px;
+            border: 4px solid var(--accent);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            animation: rotateAnim 2s infinite;
+        }
+
+        @keyframes rotateAnim {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* 2. ГЛАВНЫЙ КОНТЕЙНЕР */
         .slide-container {
             display: flex;
             transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
@@ -34,250 +67,204 @@
             min-width: 100vw;
             height: 100vh;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding: 4vw;
+            grid-template-columns: 1fr 1fr; /* По умолчанию 2 колонки */
+            padding: 40px 60px;
             gap: 40px;
             align-items: center;
         }
 
-        /* Текстовый блок */
+        /* Адаптация для мобилок в горизонтальном режиме */
+        @media (max-height: 500px) {
+            .slide { padding: 20px 40px; gap: 20px; }
+            h1 { font-size: 1.5rem !important; margin-bottom: 10px !important; }
+            p { font-size: 0.9rem !important; line-height: 1.4 !important; }
+            .text-block { padding: 20px !important; }
+        }
+
+        /* 3. ТЕКСТОВЫЙ БЛОК */
         .text-block {
-            height: 80vh;
+            height: 100%;
             background: var(--glass);
             padding: 40px;
-            border-radius: 30px;
+            border-radius: 25px;
             border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(15px);
             overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .text-block::-webkit-scrollbar { width: 6px; }
-        .text-block::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-
-        h2 { color: var(--accent); font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; }
-        h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 25px; }
-        p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px; color: rgba(255,255,255,0.9); text-align: justify; }
+        h2 { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
+        h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        p { font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 15px; }
         b { color: var(--accent); }
 
-        /* Блок для картинки */
+        /* 4. ВИЗУАЛЬНЫЙ БЛОК (Скриншот) */
         .visual-block {
-            height: 70vh;
+            height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
 
-        .img-wrapper {
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.2);
+        .img-frame {
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
             border-radius: 20px;
-            border: 2px dashed rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .img-wrapper img {
-            max-width: 95%;
-            max-height: 95%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .img-frame img {
+            max-width: 95%; max-height: 95%;
+            object-fit: contain; border-radius: 8px;
         }
 
-        /* Навигация */
-        .nav {
+        /* 5. УПРАВЛЕНИЕ */
+        .controls {
             position: fixed;
-            bottom: 30px;
-            right: 4vw;
-            display: flex;
-            gap: 15px;
-            z-index: 100;
+            bottom: 30px; right: 60px;
+            display: flex; gap: 15px; z-index: 1000;
         }
 
         .btn {
-            background: var(--accent);
-            border: none;
-            color: #000;
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
+            background: var(--accent); border: none; color: #000;
+            padding: 12px 25px; border-radius: 12px;
+            font-weight: 900; cursor: pointer; text-transform: uppercase;
+            font-size: 0.8rem; transition: 0.3s;
         }
 
         .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,204,0,0.4); }
 
-        .progress {
-            position: fixed;
-            top: 0; left: 0; height: 6px;
-            background: var(--accent);
-            transition: 0.4s;
-            z-index: 1000;
+        .btn-fs {
+            position: fixed; top: 20px; right: 20px;
+            background: var(--glass); color: white; border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 15px; border-radius: 8px; font-size: 0.7rem; z-index: 1000;
         }
 
-        /* Адаптация */
-        @media (max-width: 1000px) {
-            .slide { grid-template-columns: 1fr; }
-            .visual-block { display: none; }
+        .progress {
+            position: fixed; top: 0; left: 0; height: 5px;
+            background: var(--accent); z-index: 2000; transition: 0.4s;
         }
+
+        /* Титульный слайд */
+        .slide-intro { grid-template-columns: 1fr; text-align: center; }
+        .slide-intro .text-block { align-items: center; }
+        .slide-intro h1 { font-size: clamp(2.5rem, 6vw, 5rem); }
+
     </style>
 </head>
 <body>
 
+    <!-- Заглушка для поворота -->
+    <div id="orientation-overlay">
+        <div class="rotate-icon"></div>
+        <h1>Поверните телефон</h1>
+        <p>Презентация со скриншотами 1С лучше всего смотрится в альбомном режиме.</p>
+        <button class="btn" onclick="toggleFullScreen()">Развернуть</button>
+    </div>
+
+    <button class="btn-fs" onclick="toggleFullScreen()">[ ] Fullscreen</button>
     <div class="progress" id="progress"></div>
 
     <div class="slide-container" id="container">
         
-        <!-- Слайд 1: Вступление -->
-        <section class="slide">
+        <!-- Слайд 1: Старт -->
+        <section class="slide slide-intro">
             <div class="text-block">
-                <h2>Лекция</h2>
-                <h1>Что такое отчеты в 1С?</h1>
-                <p>Представьте, что <b>1С — это огромный склад</b>. Каждый день туда привозят товары (приход), забирают их (расход), пересчитывают остатки. Данных миллионы.</p>
-                <p><b>Отчет</b> — это человек с блокнотом, который за секунду пробегает по всему складу и выдает вам чистый лист бумаги, где написано: «У нас осталось 50 айфонов, и за месяц мы продали 20 штук».</p>
-                <p>Без отчетов работа любого бизнеса превращается в хаос, потому что руководители не видят реальной картины.</p>
-            </div>
-            <div class="visual-block">
-                <div class="img-wrapper"><img src="step1.jpg"></div>
+                <h2>Laboratory №6</h2>
+                <h1>Архитектура Отчетов 1С</h1>
+                <p>Подробный разбор Системы Компоновки Данных (СКД) и Виртуальных таблиц.</p>
+                <button class="btn" onclick="moveSlide(1)">Начать лекцию</button>
             </div>
         </section>
 
-        <!-- Слайд 2: Отличие от Документа -->
+        <!-- Слайд 2: Понятие отчета -->
         <section class="slide">
             <div class="text-block">
-                <h2>Базовые понятия</h2>
-                <h1>Отчет vs Документ</h1>
-                <p>Это самый частый вопрос новичков. Давайте разберемся раз и навсегда.</p>
-                <p><b>Документ</b> — это действие. Накладная, чек, приказ. Документ меняет реальность. Если вы провели документ «Продажа», товаров в базе стало меньше.</p>
-                <p><b>Отчет</b> — это наблюдение. Он ничего не меняет. Вы можете формировать отчет сто раз в день, и количество товаров на складе не изменится. Его задача — собрать информацию, красиво её раскрасить и показать вам.</p>
+                <h2>Теория</h2>
+                <h1>Суть объекта «Отчет»</h1>
+                <p>В 1С <b>Отчет</b> — это инструмент, который превращает тысячи строк данных в понятные цифры. В отличие от документа, отчет <b>не меняет базу</b>.</p>
+                <p>Мы используем отчеты для анализа: сколько товара осталось, какая прибыль и кто из клиентов купил больше всех.</p>
             </div>
             <div class="visual-block">
-                <div class="img-wrapper"><img src="step1.jpg"></div>
+                <div class="img-frame"><img src="step1.jpg"></div>
             </div>
         </section>
 
-        <!-- Слайд 3: Что такое СКД? -->
+        <!-- Слайд 3: СКД -->
         <section class="slide">
             <div class="text-block">
-                <h2>Технологии</h2>
-                <h1>СКД — «Умный мозг» отчета</h1>
-                <p>Раньше программисты писали отчеты вручную часами. В современной 1С есть <b>СКД (Система Компоновки Данных)</b>.</p>
-                <p>Это специальный конструктор. Вы просто говорите системе: «Я хочу видеть Склад, Товар и Остаток». СКД сама понимает, как залезть в базу данных, как все сложить и как нарисовать красивую таблицу.</p>
-                <p>СКД — это стандарт индустрии. Она позволяет пользователю самому менять настройки отчета, не заходя в Конфигуратор.</p>
+                <h2>Инструмент</h2>
+                <h1>Почему именно СКД?</h1>
+                <p><b>Система компоновки данных</b> — это встроенный в 1С мощный генератор отчетов. </p>
+                <p>Вам не нужно программировать каждую ячейку. Вы задаете <b>схему</b>, а 1С сама строит запрос к базе данных и рисует таблицу. Это экономит 90% времени разработчика.</p>
             </div>
             <div class="visual-block">
-                <div class="img-wrapper"><img src="step2.jpg"></div>
+                <div class="img-frame"><img src="step2.jpg"></div>
             </div>
         </section>
 
         <!-- Слайд 4: Виртуальные таблицы -->
         <section class="slide">
             <div class="text-block">
-                <h2>Секрет скорости</h2>
+                <h2>Производительность</h2>
                 <h1>Виртуальные таблицы</h1>
-                <p>Почему отчеты в 1С работают так быстро? Ответ: <b>Виртуальные таблицы</b>.</p>
-                <p>Система не пересчитывает все чеки за 10 лет каждый раз. Она хранит готовые «снимки» остатков на начало каждого месяца. Когда вы просите отчет, она берет последний снимок и быстро прибавляет к нему пару свежих документов.</p>
-                <p>Таблица <b>ОстаткиИОбороты</b>, которую мы выбрали в Лабе — это «супер-таблица». Она сразу знает, сколько было (Начало), сколько пришло (Приход), сколько ушло (Расход) и сколько осталось (Конец).</p>
+                <p>Для Лабораторной №6 мы выбрали таблицу <b>ОстаткиИОбороты</b>.</p>
+                <p>Это «виртуальный» объект. 1С не хранит эту таблицу в памяти постоянно, она вычисляет её в момент запроса, используя готовые <b>итоги</b>. Это позволяет получать данные по остаткам смартфонов мгновенно.</p>
             </div>
             <div class="visual-block">
-                <div class="img-wrapper"><img src="step2.jpg"></div>
+                <div class="img-frame"><img src="step2.jpg"></div>
             </div>
         </section>
 
-        <!-- Слайд 5: Лабораторная работа (Шаг 1) -->
+        <!-- Слайд 5: Периоды -->
         <section class="slide">
             <div class="text-block">
-                <h2>Практика: Лаба №6</h2>
-                <h1>Начинаем создание</h1>
-                <p>Первым делом мы заходим в <b>Конфигуратор</b>. Это «закулисье» программы. Там мы создаем новый объект — Отчет «Материалы».</p>
-                <p>Затем мы нажимаем кнопку «Открыть схему компоновки данных». Именно здесь мы будем объяснять программе, какие данные нам нужны для анализа остатков наших телефонов и комплектующих.</p>
+                <h2>Контроль</h2>
+                <h1>Параметры и периоды</h1>
+                <p>Без указания дат отчет покажет всё за всю историю. Мы используем параметры <b>НачалоПериода</b> и <b>КонецПериода</b>.</p>
+                <p>Это позволяет системе понять, за какой именно месяц мы хотим увидеть движение материалов по складу.</p>
             </div>
             <div class="visual-block">
-                <div class="img-wrapper"><img src="step1.jpg"></div>
+                <div class="img-frame"><img src="step3.jpg"></div>
             </div>
         </section>
 
-        <!-- Слайд 6: Настройка запроса (Шаг 2) -->
+        <!-- Слайд 6: Настройки пользователя -->
         <section class="slide">
             <div class="text-block">
-                <h2>Практика: Лаба №6</h2>
-                <h1>Конструктор запроса</h1>
-                <p>Это самый важный момент. Мы открываем <b>Конструктор запроса</b>. Слева мы видим список всех таблиц базы данных.</p>
-                <p>Мы находим наш регистр <b>ОстаткиМатериалов</b> и выбираем именно виртуальную таблицу <b>ОстаткиИОбороты</b>.</p>
-                <p>Мы перетаскиваем нужные поля: Склад (где лежит?), Материал (что лежит?), Количество (сколько?).</p>
+                <h2>UX Дизайн</h2>
+                <h1>Быстрый доступ</h1>
+                <p>Мы ставим галочку <b>«Включать в пользовательские настройки»</b>. </p>
+                <p>Благодаря этому, когда бухгалтер откроет программу, он увидит поля дат прямо сверху. Ему не нужно открывать сложные меню, чтобы просто поменять месяц.</p>
             </div>
             <div class="visual-block">
-                <div class="img-wrapper"><img src="step2.jpg"></div>
+                <div class="img-frame"><img src="step4.jpg"></div>
             </div>
         </section>
 
-        <!-- Слайд 7: Параметры (Шаг 3) -->
+        <!-- Слайд 7: Финал -->
         <section class="slide">
             <div class="text-block">
-                <h2>Практика: Лаба №6</h2>
-                <h1>Настройка дат (Период)</h1>
-                <p>Любой отчет имеет смысл только во времени. Вкладка <b>Параметры</b> в СКД создается автоматически, когда мы выбрали таблицу оборотов.</p>
-                <p>Там появляются поля «Начало периода» и «Конец периода». Если их не заполнить, отчет покажет данные за всё время существования фирмы, что обычно не нужно.</p>
-                <p>Мы ставим настройки так, чтобы система сама предлагала текущий месяц или день.</p>
+                <h2>Итог работы</h2>
+                <h1>Готовый результат</h1>
+                <p>Наш отчет «Материалы» готов. Он корректно группирует данные по складам и товарам, показывая приход, расход и остаток.</p>
+                <button class="btn" onclick="window.location.href='https://твой-логин.github.io/kahoot-1c-lab6/'">К игре в Kahoot →</button>
             </div>
             <div class="visual-block">
-                <div class="img-wrapper"><img src="step3.jpg"></div>
-            </div>
-        </section>
-
-        <!-- Слайд 8: Пользовательские настройки (Шаг 4) -->
-        <section class="slide">
-            <div class="text-block">
-                <h2>Практика: Лаба №6</h2>
-                <h1>Делаем удобно для людей</h1>
-                <p>Программист делает отчет один раз, а пользователь (бухгалтер или кладовщик) будет запускать его каждый день.</p>
-                <p>Чтобы пользователю не пришлось лезть в дебри настроек, мы ставим галочку <b>«Включать в пользовательские настройки»</b>.</p>
-                <p>Теперь кнопки выбора даты появятся прямо на главной панели отчета в режиме «1С:Предприятие». Это и есть забота о пользователе.</p>
-            </div>
-            <div class="visual-block">
-                <div class="img-wrapper"><img src="step4.jpg"></div>
-            </div>
-        </section>
-
-        <!-- Слайд 9: Подсистемы (Шаг 5) -->
-        <section class="slide">
-            <div class="text-block">
-                <h2>Практика: Лаба №6</h2>
-                <h1>Где найти отчет?</h1>
-                <p>Последний штрих — <b>Подсистемы</b>. В большой программе сотни функций. Чтобы наш отчет не потерялся, мы должны «припарковать» его в правильные разделы.</p>
-                <p>Мы выбираем «Бухгалтерия» и «Учет материалов». Теперь, когда пользователь зайдет в эти разделы, он сразу увидит кнопку нашего отчета в панели действий.</p>
-            </div>
-            <div class="visual-block">
-                <div class="img-wrapper"><img src="step5.jpg"></div>
-            </div>
-        </section>
-
-        <!-- Слайд 10: Финал -->
-        <section class="slide">
-            <div class="text-block">
-                <h2>Результат</h2>
-                <h1>Победа! Отчет работает</h1>
-                <p>Теперь мы запускаем 1С в обычном режиме. Находим наш отчет, выбираем даты и нажимаем <b>Сформировать</b>.</p>
-                <p>Перед нами — идеальная таблица. Мы видим, сколько телефонов было на начало недели, сколько мы купили, сколько продали и какой остаток прямо сейчас.</p>
-                <p>Эта работа — фундамент для любого 1С-разработчика. Спасибо за внимание!</p>
-                <button class="btn" style="margin-top: 20px;" onclick="window.location.href='index.html'">Перейти к Kahoot!</button>
-            </div>
-            <div class="visual-block">
-                <div class="img-wrapper"><img src="step5.jpg"></div>
+                <div class="img-frame"><img src="step5.jpg"></div>
             </div>
         </section>
 
     </div>
 
-    <div class="nav">
-        <button class="btn" onclick="moveSlide(-1)">Назад</button>
-        <button class="btn" onclick="moveSlide(1)">Вперед</button>
+    <div class="controls">
+        <button class="btn" onclick="moveSlide(-1)">←</button>
+        <button class="btn" onclick="moveSlide(1)">→</button>
     </div>
 
     <script>
@@ -290,6 +277,14 @@
             currentSlide = Math.max(0, Math.min(currentSlide + dir, slides.length - 1));
             container.style.transform = `translateX(-${currentSlide * 100}vw)`;
             progress.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
         }
 
         document.addEventListener('keydown', (e) => {
