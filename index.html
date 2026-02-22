@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Лекция 1С: Архитектура Отчетов</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>1C: Architecture & Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #1a0633;
+            --bg: #120422;
             --accent: #ffcc00;
+            --secondary: #00f2ff;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.08);
-            --grad: linear-gradient(135deg, #2d0b5a 0%, #1a0633 100%);
+            --glass: rgba(255, 255, 255, 0.05);
+            --grad: linear-gradient(135deg, #1f0b42 0%, #0d041a 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -21,10 +22,10 @@
             background: var(--grad);
             color: var(--white);
             overflow: hidden;
-            height: 100dvh; /* Dynamic viewport height для мобилок */
+            height: 100dvh;
         }
 
-        /* 1. ПРЕДУПРЕЖДЕНИЕ О ПОВОРОТЕ (Отображается только в портретном режиме мобилок) */
+        /* 1. ПРЕДУПРЕЖДЕНИЕ О ПОВОРОТЕ */
         #orientation-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -43,11 +44,11 @@
         }
 
         .rotate-icon {
-            width: 80px; height: 80px;
-            border: 4px solid var(--accent);
-            border-radius: 15px;
+            width: 70px; height: 70px;
+            border: 3px solid var(--accent);
+            border-radius: 12px;
             margin-bottom: 20px;
-            animation: rotateAnim 2s infinite;
+            animation: rotateAnim 2s infinite ease-in-out;
         }
 
         @keyframes rotateAnim {
@@ -56,10 +57,10 @@
             100% { transform: rotate(0deg); }
         }
 
-        /* 2. ГЛАВНЫЙ КОНТЕЙНЕР */
+        /* 2. КОНТЕЙНЕР */
         .slide-container {
             display: flex;
-            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
             height: 100%;
         }
 
@@ -67,204 +68,236 @@
             min-width: 100vw;
             height: 100vh;
             display: grid;
-            grid-template-columns: 1fr 1fr; /* По умолчанию 2 колонки */
-            padding: 40px 60px;
-            gap: 40px;
+            grid-template-columns: 1fr 1fr;
+            padding: 50px 80px;
+            gap: 50px;
             align-items: center;
         }
 
-        /* Адаптация для мобилок в горизонтальном режиме */
-        @media (max-height: 500px) {
-            .slide { padding: 20px 40px; gap: 20px; }
-            h1 { font-size: 1.5rem !important; margin-bottom: 10px !important; }
-            p { font-size: 0.9rem !important; line-height: 1.4 !important; }
-            .text-block { padding: 20px !important; }
-        }
-
-        /* 3. ТЕКСТОВЫЙ БЛОК */
-        .text-block {
-            height: 100%;
+        /* 3. ТЕКСТОВАЯ КАРТОЧКА */
+        .text-card {
+            height: 85vh;
             background: var(--glass);
-            padding: 40px;
-            border-radius: 25px;
+            padding: 50px;
+            border-radius: 30px;
             border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
         }
 
-        h2 { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
-        h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
-        p { font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 15px; }
-        b { color: var(--accent); }
+        .text-card::-webkit-scrollbar { width: 4px; }
+        .text-card::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-        /* 4. ВИЗУАЛЬНЫЙ БЛОК (Скриншот) */
-        .visual-block {
-            height: 80vh;
+        h2 { color: var(--accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 15px; font-weight: 800; }
+        h1 { font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px; }
+        p { font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.8); margin-bottom: 20px; text-align: justify; font-weight: 300; }
+        
+        .highlight { color: var(--accent); font-weight: 800; }
+        .blue-tag { color: var(--secondary); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
+
+        /* 4. ВИЗУАЛЬНАЯ ЧАСТЬ */
+        .visual-area {
+            height: 75vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .img-frame {
+        .frame {
             width: 100%; height: 100%;
             background: rgba(0,0,0,0.3);
-            border-radius: 20px;
+            border-radius: 25px;
             border: 1px solid rgba(255,255,255,0.1);
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            position: relative;
         }
 
-        .img-frame img {
-            max-width: 95%; max-height: 95%;
-            object-fit: contain; border-radius: 8px;
-        }
+        .frame img { max-width: 92%; max-height: 92%; object-fit: contain; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
 
-        /* 5. УПРАВЛЕНИЕ */
-        .controls {
-            position: fixed;
-            bottom: 30px; right: 60px;
-            display: flex; gap: 15px; z-index: 1000;
+        /* Теоретические вставки справа */
+        .theory-box {
+            background: rgba(255,255,0,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px dashed var(--accent);
+            text-align: center;
         }
+        .theory-box h3 { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
 
+        /* 5. UI */
+        .controls { position: fixed; bottom: 40px; right: 80px; display: flex; gap: 20px; z-index: 1000; }
         .btn {
             background: var(--accent); border: none; color: #000;
-            padding: 12px 25px; border-radius: 12px;
+            padding: 15px 40px; border-radius: 15px;
             font-weight: 900; cursor: pointer; text-transform: uppercase;
-            font-size: 0.8rem; transition: 0.3s;
+            font-size: 0.9rem; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .btn:hover { transform: scale(1.1) rotate(-2deg); box-shadow: 0 10px 30px rgba(255,204,0,0.5); }
 
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,204,0,0.4); }
+        .progress-bar { position: fixed; top: 0; left: 0; height: 6px; background: var(--accent); z-index: 2000; transition: 0.5s; }
 
-        .btn-fs {
-            position: fixed; top: 20px; right: 20px;
-            background: var(--glass); color: white; border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 15px; border-radius: 8px; font-size: 0.7rem; z-index: 1000;
+        /* Адаптация под мелкие экраны */
+        @media (max-height: 600px) {
+            .slide { padding: 20px 40px; }
+            h1 { font-size: 1.8rem; }
+            p { font-size: 0.9rem; line-height: 1.4; }
         }
-
-        .progress {
-            position: fixed; top: 0; left: 0; height: 5px;
-            background: var(--accent); z-index: 2000; transition: 0.4s;
-        }
-
-        /* Титульный слайд */
-        .slide-intro { grid-template-columns: 1fr; text-align: center; }
-        .slide-intro .text-block { align-items: center; }
-        .slide-intro h1 { font-size: clamp(2.5rem, 6vw, 5rem); }
-
     </style>
 </head>
 <body>
 
-    <!-- Заглушка для поворота -->
     <div id="orientation-overlay">
         <div class="rotate-icon"></div>
-        <h1>Поверните телефон</h1>
-        <p>Презентация со скриншотами 1С лучше всего смотрится в альбомном режиме.</p>
-        <button class="btn" onclick="toggleFullScreen()">Развернуть</button>
+        <h1>РЕЖИМ ЛЕКЦИИ</h1>
+        <p>Для корректного отображения схем и графиков поверните устройство горизонтально.</p>
     </div>
 
-    <button class="btn-fs" onclick="toggleFullScreen()">[ ] Fullscreen</button>
-    <div class="progress" id="progress"></div>
+    <div class="progress-bar" id="progress"></div>
 
     <div class="slide-container" id="container">
         
-        <!-- Слайд 1: Старт -->
-        <section class="slide slide-intro">
-            <div class="text-block">
-                <h2>Laboratory №6</h2>
-                <h1>Архитектура Отчетов 1С</h1>
-                <p>Подробный разбор Системы Компоновки Данных (СКД) и Виртуальных таблиц.</p>
-                <button class="btn" onclick="moveSlide(1)">Начать лекцию</button>
+        <!-- СЛАЙД 1: ФИЛОСОФИЯ -->
+        <section class="slide">
+            <div class="text-card">
+                <h2>Module 01: Philosophy</h2>
+                <h1>Данные как <br><span class="highlight">Энтропия</span></h1>
+                <p>В современном бизнесе данные — это хаос. Без структуры информация превращается в <span class="highlight">цифровой шум</span>.</p>
+                <p>Объект <b>«Отчет»</b> в системе 1С — это не просто таблица. Это фильтр, который упорядочивает реальность, превращая хаотичные записи в <span class="highlight">стратегическое преимущество</span>.</p>
+                <p class="blue-tag">// Интеллектуальный анализ метаданных</p>
+            </div>
+            <div class="visual-area">
+                <div class="theory-box">
+                    <h3>100%</h3>
+                    <p>Точность сводных данных</p>
+                </div>
             </div>
         </section>
 
-        <!-- Слайд 2: Понятие отчета -->
+        <!-- СЛАЙД 2: СКД ПАРАДИГМА -->
         <section class="slide">
-            <div class="text-block">
-                <h2>Теория</h2>
-                <h1>Суть объекта «Отчет»</h1>
-                <p>В 1С <b>Отчет</b> — это инструмент, который превращает тысячи строк данных в понятные цифры. В отличие от документа, отчет <b>не меняет базу</b>.</p>
-                <p>Мы используем отчеты для анализа: сколько товара осталось, какая прибыль и кто из клиентов купил больше всех.</p>
+            <div class="text-card">
+                <h2>Module 02: Paradigm</h2>
+                <h1>Декларативный <br><span class="highlight">Интеллект</span></h1>
+                <p><b>СКД</b> — это вершина инженерной мысли в 1С. Мы не пишем алгоритм вывода каждой ячейки — это прошлый век.</p>
+                <p>Мы используем <span class="highlight">Декларативный подход</span>: описываем, ЧТО мы хотим получить, а «умный движок» СКД сам вычисляет оптимальный путь получения данных.</p>
+                <p class="blue-tag">// Low-code архитектура высокого уровня</p>
             </div>
-            <div class="visual-block">
-                <div class="img-frame"><img src="step1.jpg"></div>
+            <div class="visual-area">
+                <div class="theory-box">
+                    <h3>DCS</h3>
+                    <p>Data Composition System</p>
+                </div>
             </div>
         </section>
 
-        <!-- Слайд 3: СКД -->
+        <!-- СЛАЙД 3: ВРЕМЯ -->
         <section class="slide">
-            <div class="text-block">
-                <h2>Инструмент</h2>
-                <h1>Почему именно СКД?</h1>
-                <p><b>Система компоновки данных</b> — это встроенный в 1С мощный генератор отчетов. </p>
-                <p>Вам не нужно программировать каждую ячейку. Вы задаете <b>схему</b>, а 1С сама строит запрос к базе данных и рисует таблицу. Это экономит 90% времени разработчика.</p>
+            <div class="text-card">
+                <h2>Module 03: Temporal Logic</h2>
+                <h1>Измерение <br><span class="highlight">Времени</span></h1>
+                <p>Данные без привязки к периоду бесполезны. В 1С мы работаем с <span class="highlight">Темпоральными таблицами</span>.</p>
+                <p>Виртуальная таблица <b>«Остатки и Обороты»</b> — это математическая проекция. Она не просто берет цифры, она вычисляет состояние системы в любой точке временного континуума.</p>
+                <p class="blue-tag">// Математика регистров накопления</p>
             </div>
-            <div class="visual-block">
-                <div class="img-frame"><img src="step2.jpg"></div>
+            <div class="visual-area">
+                <div class="theory-box">
+                    <h3>T = f(x)</h3>
+                    <p>Динамический расчет итогов</p>
+                </div>
             </div>
         </section>
 
-        <!-- Слайд 4: Виртуальные таблицы -->
+        <!-- СЛАЙД 4: UX АРХИТЕКТУРА -->
         <section class="slide">
-            <div class="text-block">
-                <h2>Производительность</h2>
-                <h1>Виртуальные таблицы</h1>
-                <p>Для Лабораторной №6 мы выбрали таблицу <b>ОстаткиИОбороты</b>.</p>
-                <p>Это «виртуальный» объект. 1С не хранит эту таблицу в памяти постоянно, она вычисляет её в момент запроса, используя готовые <b>итоги</b>. Это позволяет получать данные по остаткам смартфонов мгновенно.</p>
+            <div class="text-card">
+                <h2>Module 04: UX Design</h2>
+                <h1>Когнитивная <яspan class="highlight">Нагрузка</span></h1>
+                <p>Инженер должен думать о пользователе. Хороший отчет — это тот, где <span class="highlight">ноль лишних действий</span>.</p>
+                <p>Вынося параметры на главную панель, мы минимизируем когнитивную нагрузку. Мы создаем <b>интуитивный мост</b> между базой данных и человеческим восприятием.</p>
+                <p class="blue-tag">// Принципы чистого интерфейса 1С</p>
             </div>
-            <div class="visual-block">
-                <div class="img-frame"><img src="step2.jpg"></div>
+            <div class="visual-area">
+                <div class="theory-box">
+                    <h3>0.5s</h3>
+                    <p>Скорость принятия решения</p>
+                </div>
             </div>
         </section>
 
-        <!-- Слайд 5: Периоды -->
+        <!-- СЛАЙД 5: БИЗНЕС-ЦЕННОСТЬ -->
         <section class="slide">
-            <div class="text-block">
-                <h2>Контроль</h2>
-                <h1>Параметры и периоды</h1>
-                <p>Без указания дат отчет покажет всё за всю историю. Мы используем параметры <b>НачалоПериода</b> и <b>КонецПериода</b>.</p>
-                <p>Это позволяет системе понять, за какой именно месяц мы хотим увидеть движение материалов по складу.</p>
+            <div class="text-card">
+                <h2>Module 05: Impact</h2>
+                <h1>Бизнес как <br><span class="highlight">Алгоритм</span></h1>
+                <p>Финальная цель Лабораторной №6 — не просто закрыть задание, а создать <span class="highlight">инструмент управления</span>.</p>
+                <p>Когда мы видим остатки смартфонов и комплектующих, мы видим не цифры, а <b>пульс предприятия</b>. Отчетность — это зрение бизнеса.</p>
+                <p class="blue-tag">// Переход от теории к практике</p>
             </div>
-            <div class="visual-block">
-                <div class="img-frame"><img src="step3.jpg"></div>
+            <div class="visual-area">
+                <div class="theory-box">
+                    <h3>ROI</h3>
+                    <p>Эффективность автоматизации</p>
+                </div>
             </div>
         </section>
 
-        <!-- Слайд 6: Настройки пользователя -->
+        <!-- СЛАЙДЫ С ФОТО (ПРАКТИКА) -->
         <section class="slide">
-            <div class="text-block">
-                <h2>UX Дизайн</h2>
-                <h1>Быстрый доступ</h1>
-                <p>Мы ставим галочку <b>«Включать в пользовательские настройки»</b>. </p>
-                <p>Благодаря этому, когда бухгалтер откроет программу, он увидит поля дат прямо сверху. Ему не нужно открывать сложные меню, чтобы просто поменять месяц.</p>
+            <div class="text-card">
+                <h2>Step 01: Creation</h2>
+                <h1>Инициализация <br><span class="highlight">Объекта</span></h1>
+                <p>В Конфигураторе создаем отчет <b>«Материалы»</b>. Это первый шаг в проектировании аналитической системы.</p>
             </div>
-            <div class="visual-block">
-                <div class="img-frame"><img src="step4.jpg"></div>
-            </div>
+            <div class="visual-area"><div class="frame"><img src="step1.jpg"></div></div>
         </section>
 
-        <!-- Слайд 7: Финал -->
         <section class="slide">
-            <div class="text-block">
-                <h2>Итог работы</h2>
-                <h1>Готовый результат</h1>
-                <p>Наш отчет «Материалы» готов. Он корректно группирует данные по складам и товарам, показывая приход, расход и остаток.</p>
-                <button class="btn" onclick="window.location.href='https://твой-логин.github.io/kahoot-1c-lab6/'">К игре в Kahoot →</button>
+            <div class="text-card">
+                <h2>Step 02: Logic</h2>
+                <h1>Конструктор <br><span class="highlight">Запроса</span></h1>
+                <p>Выбираем виртуальную таблицу. Здесь формируется SQL-подобный запрос к регистрам накопления.</p>
             </div>
-            <div class="visual-block">
-                <div class="img-frame"><img src="step5.jpg"></div>
+            <div class="visual-area"><div class="frame"><img src="step2.jpg"></div></div>
+        </section>
+
+        <section class="slide">
+            <div class="text-card">
+                <h2>Step 03: Controls</h2>
+                <h1>Настройка <br><span class="highlight">Периода</span></h1>
+                <p>Устанавливаем временные границы. Система должна четко знать точку входа и выхода данных.</p>
             </div>
+            <div class="visual-area"><div class="frame"><img src="step3.jpg"></div></div>
+        </section>
+
+        <section class="slide">
+            <div class="text-card">
+                <h2>Step 04: Fast Access</h2>
+                <h1>Пользовательские <br><span class="highlight">Настройки</span></h1>
+                <p>Выносим управление «Началом» и «Концом» периода в шапку отчета. Максимальный UX-комфорт.</p>
+            </div>
+            <div class="visual-area"><div class="frame"><img src="step4.jpg"></div></div>
+        </section>
+
+        <section class="slide">
+            <div class="text-card">
+                <h2>Step 05: Release</h2>
+                <h1>Финальная <br><span class="highlight">Визуализация</span></h1>
+                <p>Результат работы в режиме «1С:Предприятие». Все данные синхронизированы и готовы к анализу.</p>
+                <button class="btn" onclick="window.location.href='https://твой-логин.github.io/kahoot-1c-lab6/'">Играть в Kahoot</button>
+            </div>
+            <div class="visual-area"><div class="frame"><img src="step5.jpg"></div></div>
         </section>
 
     </div>
 
     <div class="controls">
-        <button class="btn" onclick="moveSlide(-1)">←</button>
-        <button class="btn" onclick="moveSlide(1)">→</button>
+        <button class="btn" onclick="moveSlide(-1)">← Назад</button>
+        <button class="btn" onclick="moveSlide(1)">Вперед →</button>
     </div>
 
     <script>
@@ -277,14 +310,6 @@
             currentSlide = Math.max(0, Math.min(currentSlide + dir, slides.length - 1));
             container.style.transform = `translateX(-${currentSlide * 100}vw)`;
             progress.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
         }
 
         document.addEventListener('keydown', (e) => {
